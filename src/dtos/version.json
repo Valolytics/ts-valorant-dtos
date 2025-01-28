@@ -1,0 +1,10 @@
+{
+  "manifestId": "BF8E67E8EF9D835A",
+  "branch": "release-10.01",
+  "version": "10.01.00.3197283",
+  "buildVersion": "9",
+  "engineVersion": "4.27.2.0",
+  "riotClientVersion": "release-10.01-shipping-9-3197283",
+  "riotClientBuild": "101.0.0.2676.4602",
+  "buildDate": "2025-01-15T00:00:00Z"
+}

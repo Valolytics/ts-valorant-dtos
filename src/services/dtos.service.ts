@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Role } from '../models/role.model.js';
 import { Agent } from '../models/agent.model.js';
 import { Buddy } from '../models/buddy.model.js';
@@ -19,204 +18,72 @@ import { Season } from '../models/season.model.js';
 import { Spray } from '../models/spray.model.js';
 import { Weapon } from '../models/weapon.model.js';
 import { Theme } from '../models/theme.model.js';
-import { Version } from '../models/version.model.js';
 
-interface Themes { [uuid: string]: Theme; }
-interface Roles { [uuid: string]: Role; }
-interface Agents { [uuid: string]: Agent; }
-interface Buddies { [uuid: string]: Buddy; }
-interface Bundles { [uuid: string]: Bundle; }
-interface Ceremonies { [uuid: string]: Ceremony; }
-interface CompetitiveTiers { [uuid: string]: CompetitiveTier; }
-interface ContentTiers { [uuid: string]: ContentTier; }
-interface Contracts { [uuid: string]: Contract; }
-interface Currencies { [uuid: string]: Currency; }
-interface Events { [uuid: string]: EventDto; }
-interface GameModes { [uuid: string]: GameMode; }
-interface Gears { [uuid: string]: Gear; }
-interface LevelBorders { [uuid: string]: LevelBorder; }
-interface Maps { [uuid: string]: MapDto; }
-interface PlayerCards { [uuid: string]: PlayerCard; }
-interface PlayerTitles { [uuid: string]: PlayerTitle; }
-interface Seasons { [uuid: string]: Season; }
-interface Sprays { [uuid: string]: Spray; }
-interface Weapons { [uuid: string]: Weapon; }
+import JsonThemes from '../dtos/themes.json';
+import JsonRoles from '../dtos/roles.json';
+import JsonAgents from '../dtos/agents.json';
+import JsonBuddies from '../dtos/buddies.json';
+import JsonBundles from '../dtos/bundles.json';
+import JsonCeremonies from '../dtos/ceremonies.json';
+import JsonCompetitiveTiers from '../dtos/competitiveTiers.json';
+import JsonContentTiers from '../dtos/contentTiers.json';
+import JsonContracts from '../dtos/contracts.json';
+import JsonCurrencies from '../dtos/currencies.json';
+import JsonEvents from '../dtos/events.json';
+import JsonGameModes from '../dtos/gameModes.json';
+import JsonGears from '../dtos/gears.json';
+import JsonLevelBorders from '../dtos/levelBorders.json';
+import JsonMaps from '../dtos/maps.json';
+import JsonPlayerCards from '../dtos/playerCards.json';
+import JsonPlayerTitles from '../dtos/playerTitles.json';
+import JsonSeasons from '../dtos/seasons.json';
+import JsonSprays from '../dtos/sprays.json';
+import JsonWeapons from '../dtos/weapons.json';
 
-let VERSION: Version;
-const THEMES: Themes = {}
-const ROLES: Roles = {}
-const AGENTS: Agents = {}
-const BUDDIES: Buddies = {}
-const BUNDLES: Bundles = {}
-const CEREMONIES: Ceremonies = {}
-const COMPETITIVE_TIERS: CompetitiveTiers = {}
-const CONTENT_TIERS: ContentTiers = {}
-const CONTRACTS: Contracts = {}
-const CURRENCIES: Currencies = {}
-const EVENTS: Events = {}
-const GAME_MODES: GameModes = {}
-const GEARS: Gears = {}
-const LEVEL_BORDERS: LevelBorders = {}
-const MAPS: Maps = {}
-const PLAYER_CARDS: PlayerCards = {}
-const PLAYER_TITLES: PlayerTitles = {}
-const SEASONS: Seasons = {}
-const SPRAYS: Sprays = {}
-const WEAPONS: Weapons = {}
+export interface Themes { [uuid: string]: Theme; }
+export interface Roles { [uuid: string]: Role; }
+export interface Agents { [uuid: string]: Agent; }
+export interface Buddies { [uuid: string]: Buddy; }
+export interface Bundles { [uuid: string]: Bundle; }
+export interface Ceremonies { [uuid: string]: Ceremony; }
+export interface CompetitiveTiers { [uuid: string]: CompetitiveTier; }
+export interface ContentTiers { [uuid: string]: ContentTier; }
+export interface Contracts { [uuid: string]: Contract; }
+export interface Currencies { [uuid: string]: Currency; }
+export interface Events { [uuid: string]: EventDto; }
+export interface GameModes { [uuid: string]: GameMode; }
+export interface Gears { [uuid: string]: Gear; }
+export interface LevelBorders { [uuid: string]: LevelBorder; }
+export interface Maps { [uuid: string]: MapDto; }
+export interface PlayerCards { [uuid: string]: PlayerCard; }
+export interface PlayerTitles { [uuid: string]: PlayerTitle; }
+export interface Seasons { [uuid: string]: Season; }
+export interface Sprays { [uuid: string]: Spray; }
+export interface Weapons { [uuid: string]: Weapon; }
 
-export type DTOs = {
-    THEMES: Themes;
-    ROLES: Roles;
-    AGENTS: Agents;
-    BUDDIES: Buddies;
-    BUNDLES: Bundles;
-    CEREMONIES: Ceremonies;
-    COMPETITIVE_TIERS: CompetitiveTiers;
-    CONTENT_TIERS: ContentTiers;
-    CONTRACTS: Contracts;
-    CURRENCIES: Currencies;
-    EVENTS: Events;
-    GAME_MODES: GameModes;
-    GEARS: Gears;
-    LEVEL_BORDERS: LevelBorders;
-    MAPS: Maps;
-    PLAYER_CARDS: PlayerCards;
-    PLAYER_TITLES: PlayerTitles;
-    SEASONS: Seasons;
-    SPRAYS: Sprays;
-    WEAPONS: Weapons;
-}
+export const THEMES: Themes = mapToInstances(JsonThemes, Theme) as Themes;
+export const ROLES: Roles = mapToInstances(JsonRoles, Role) as Roles;
+export const AGENTS: Agents = mapToInstances(JsonAgents, Agent) as Agents;
+export const BUDDIES: Buddies = mapToInstances(JsonBuddies, Buddy) as Buddies;
+export const BUNDLES: Bundles = mapToInstances(JsonBundles, Bundle) as Bundles;
+export const CEREMONIES: Ceremonies = mapToInstances(JsonCeremonies, Ceremony) as Ceremonies;
+export const COMPETITIVE_TIERS: CompetitiveTiers = mapToInstances(JsonCompetitiveTiers, CompetitiveTier) as CompetitiveTiers;
+export const CONTENT_TIERS: ContentTiers = mapToInstances(JsonContentTiers, ContentTier) as ContentTiers;
+export const CONTRACTS: Contracts = mapToInstances(JsonContracts, Contract) as Contracts;
+export const CURRENCIES: Currencies = mapToInstances(JsonCurrencies, Currency) as Currencies;
+export const EVENTS: Events = mapToInstances(JsonEvents, EventDto) as Events;
+export const GAME_MODES: GameModes = mapToInstances(JsonGameModes, GameMode) as GameModes;
+export const GEARS: Gears = mapToInstances(JsonGears, Gear) as Gears;
+export const LEVEL_BORDERS: LevelBorders = mapToInstances(JsonLevelBorders, LevelBorder) as LevelBorders;
+export const MAPS: Maps = mapToInstances(JsonMaps, MapDto) as Maps;
+export const PLAYER_CARDS: PlayerCards = mapToInstances(JsonPlayerCards, PlayerCard) as PlayerCards;
+export const PLAYER_TITLES: PlayerTitles = mapToInstances(JsonPlayerTitles, PlayerTitle) as PlayerTitles;
+export const SEASONS: Seasons = mapToInstances(JsonSeasons, Season) as Seasons;
+export const SPRAYS: Sprays = mapToInstances(JsonSprays, Spray) as Sprays;
+export const WEAPONS: Weapons = mapToInstances(JsonWeapons, Weapon) as Weapons;
 
-let currentBranch = '';
-
-export async function getDTOs(): Promise<DTOs | undefined> {
-    try {
-        let versionReponse = await axios.get('https://valorant-api.com/v1/version');
-        VERSION = new Version(versionReponse.data.data);
-        if (VERSION.branch !== currentBranch) {
-            currentBranch = VERSION.branch;
-
-            const themesResponse = await axios.get('https://valorant-api.com/v1/themes');
-            themesResponse.data.data.forEach((theme: any) => {
-                THEMES[theme.uuid] = new Theme(theme);
-            });
-
-            const agentsResponse = await axios.get('https://valorant-api.com/v1/agents?isPlayableCharacter=true');
-            agentsResponse.data.data.forEach((agent: any) => {
-                ROLES[agent.role.uuid] = new Role(agent.role);
-                AGENTS[agent.uuid] = new Agent(agent);
-            });
-
-            const buddiesResponse = await axios.get('https://valorant-api.com/v1/buddies');
-            buddiesResponse.data.data.forEach((buddy: any) => {
-                BUDDIES[buddy.uuid] = new Buddy(buddy);
-            });
-
-            const bundlesResponse = await axios.get('https://valorant-api.com/v1/bundles');
-            bundlesResponse.data.data.forEach((bundle: any) => {
-                BUNDLES[bundle.uuid] = new Bundle(bundle);
-            });
-
-            const ceremoniesResponse = await axios.get('https://valorant-api.com/v1/ceremonies');
-            ceremoniesResponse.data.data.forEach((ceremony: any) => {
-                CEREMONIES[ceremony.uuid] = new Ceremony(ceremony);
-            });
-
-            const competitiveTiersResponse = await axios.get('https://valorant-api.com/v1/competitivetiers');
-            competitiveTiersResponse.data.data.forEach((tier: any) => {
-                COMPETITIVE_TIERS[tier.uuid] = new CompetitiveTier(tier);
-            });
-
-            const contentTiersResponse = await axios.get('https://valorant-api.com/v1/contenttiers');
-            contentTiersResponse.data.data.forEach((tier: any) => {
-                CONTENT_TIERS[tier.uuid] = new ContentTier(tier);
-            });
-
-            const contractsResponse = await axios.get('https://valorant-api.com/v1/contracts');
-            contractsResponse.data.data.forEach((contract: any) => {
-                CONTRACTS[contract.uuid] = new Contract(contract);
-            });
-
-            const currenciesResponse = await axios.get('https://valorant-api.com/v1/currencies');
-            currenciesResponse.data.data.forEach((currency: any) => {
-                CURRENCIES[currency.uuid] = new Currency(currency);
-            });
-
-            const eventsResponse = await axios.get('https://valorant-api.com/v1/events');
-            eventsResponse.data.data.forEach((event: any) => {
-                EVENTS[event.uuid] = new EventDto(event);
-            });
-
-            const gameModesResponse = await axios.get('https://valorant-api.com/v1/gamemodes');
-            gameModesResponse.data.data.forEach((gameMode: any) => {
-                GAME_MODES[gameMode.uuid] = new GameMode(gameMode);
-            });
-
-            const gearsResponse = await axios.get('https://valorant-api.com/v1/gear');
-            gearsResponse.data.data.forEach((gear: any) => {
-                GEARS[gear.uuid] = new Gear(gear);
-            });
-
-            const levelBordersResponse = await axios.get('https://valorant-api.com/v1/levelborders');
-            levelBordersResponse.data.data.forEach((border: any) => {
-                LEVEL_BORDERS[border.uuid] = new LevelBorder(border);
-            });
-
-            const mapsResponse = await axios.get('https://valorant-api.com/v1/maps');
-            mapsResponse.data.data.forEach((map: any) => {
-                MAPS[map.uuid] = new MapDto(map);
-            });
-
-            const playerCardsResponse = await axios.get('https://valorant-api.com/v1/playercards');
-            playerCardsResponse.data.data.forEach((card: any) => {
-                PLAYER_CARDS[card.uuid] = new PlayerCard(card);
-            });
-
-            const playerTitlesResponse = await axios.get('https://valorant-api.com/v1/playertitles');
-            playerTitlesResponse.data.data.forEach((title: any) => {
-                PLAYER_TITLES[title.uuid] = new PlayerTitle(title);
-            });
-
-            const seasonsResponse = await axios.get('https://valorant-api.com/v1/seasons');
-            seasonsResponse.data.data.forEach((season: any) => {
-                SEASONS[season.uuid] = new Season(season);
-            });
-
-            const spraysResponse = await axios.get('https://valorant-api.com/v1/sprays');
-            spraysResponse.data.data.forEach((spray: any) => {
-                SPRAYS[spray.uuid] = new Spray(spray);
-            });
-
-            const weaponsResponse = await axios.get('https://valorant-api.com/v1/weapons');
-            weaponsResponse.data.data.forEach((weapon: any) => {
-                WEAPONS[weapon.uuid] = new Weapon(weapon);
-            });
-        }
-
-        return {
-            AGENTS,
-            BUDDIES,
-            BUNDLES,
-            CEREMONIES,
-            COMPETITIVE_TIERS,
-            CONTENT_TIERS,
-            CONTRACTS,
-            CURRENCIES,
-            EVENTS,
-            GAME_MODES,
-            GEARS,
-            LEVEL_BORDERS,
-            MAPS,
-            PLAYER_CARDS,
-            PLAYER_TITLES,
-            ROLES,
-            SEASONS,
-            SPRAYS,
-            THEMES,
-            WEAPONS
-        }
-
-    } catch (error) {
-        console.error('Error updating dtos:', error);
-    }
+function mapToInstances<T, U>(jsonObject: { [uuid: string]: T }, constructor: new (data: T) => U): { [uuid: string]: U } {
+    return Object.fromEntries(
+        Object.entries(jsonObject).map(([uuid, item]) => [uuid, new constructor(item)])
+    );
 }
