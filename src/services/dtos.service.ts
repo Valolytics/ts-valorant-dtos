@@ -1,5 +1,4 @@
 import axios from 'axios';
-import log from '../logger/index.js';
 import { Role } from '../models/role.model.js';
 import { Agent } from '../models/agent.model.js';
 import { Buddy } from '../models/buddy.model.js';
@@ -43,31 +42,54 @@ interface Seasons { [uuid: string]: Season; }
 interface Sprays { [uuid: string]: Spray; }
 interface Weapons { [uuid: string]: Weapon; }
 
-export let VERSION: Version;
-export const THEMES: Themes = {}
-export const ROLES: Roles = {}
-export const AGENTS: Agents = {}
-export const BUDDIES: Buddies = {}
-export const BUNDLES: Bundles = {}
-export const CEREMONIES: Ceremonies = {}
-export const COMPETITIVE_TIERS: CompetitiveTiers = {}
-export const CONTENT_TIERS: ContentTiers = {}
-export const CONTRACTS: Contracts = {}
-export const CURRENCIES: Currencies = {}
-export const EVENTS: Events = {}
-export const GAME_MODES: GameModes = {}
-export const GEARS: Gears = {}
-export const LEVEL_BORDERS: LevelBorders = {}
-export const MAPS: Maps = {}
-export const PLAYER_CARDS: PlayerCards = {}
-export const PLAYER_TITLES: PlayerTitles = {}
-export const SEASONS: Seasons = {}
-export const SPRAYS: Sprays = {}
-export const WEAPONS: Weapons = {}
+let VERSION: Version;
+const THEMES: Themes = {}
+const ROLES: Roles = {}
+const AGENTS: Agents = {}
+const BUDDIES: Buddies = {}
+const BUNDLES: Bundles = {}
+const CEREMONIES: Ceremonies = {}
+const COMPETITIVE_TIERS: CompetitiveTiers = {}
+const CONTENT_TIERS: ContentTiers = {}
+const CONTRACTS: Contracts = {}
+const CURRENCIES: Currencies = {}
+const EVENTS: Events = {}
+const GAME_MODES: GameModes = {}
+const GEARS: Gears = {}
+const LEVEL_BORDERS: LevelBorders = {}
+const MAPS: Maps = {}
+const PLAYER_CARDS: PlayerCards = {}
+const PLAYER_TITLES: PlayerTitles = {}
+const SEASONS: Seasons = {}
+const SPRAYS: Sprays = {}
+const WEAPONS: Weapons = {}
+
+export type DTOs = {
+    THEMES: Themes;
+    ROLES: Roles;
+    AGENTS: Agents;
+    BUDDIES: Buddies;
+    BUNDLES: Bundles;
+    CEREMONIES: Ceremonies;
+    COMPETITIVE_TIERS: CompetitiveTiers;
+    CONTENT_TIERS: ContentTiers;
+    CONTRACTS: Contracts;
+    CURRENCIES: Currencies;
+    EVENTS: Events;
+    GAME_MODES: GameModes;
+    GEARS: Gears;
+    LEVEL_BORDERS: LevelBorders;
+    MAPS: Maps;
+    PLAYER_CARDS: PlayerCards;
+    PLAYER_TITLES: PlayerTitles;
+    SEASONS: Seasons;
+    SPRAYS: Sprays;
+    WEAPONS: Weapons;
+}
 
 let currentBranch = '';
 
-export async function updateDtos() {
+export async function getDTOs(): Promise<DTOs | undefined> {
     try {
         let versionReponse = await axios.get('https://valorant-api.com/v1/version');
         VERSION = new Version(versionReponse.data.data);
@@ -78,122 +100,123 @@ export async function updateDtos() {
             themesResponse.data.data.forEach((theme: any) => {
                 THEMES[theme.uuid] = new Theme(theme);
             });
-            log.info(`${Object.keys(THEMES).length} themes updated.`);
 
             const agentsResponse = await axios.get('https://valorant-api.com/v1/agents?isPlayableCharacter=true');
             agentsResponse.data.data.forEach((agent: any) => {
                 ROLES[agent.role.uuid] = new Role(agent.role);
                 AGENTS[agent.uuid] = new Agent(agent);
             });
-            log.info(`${Object.keys(ROLES).length} roles updated.`);
-            log.info(`${Object.keys(AGENTS).length} agents updated.`);
 
             const buddiesResponse = await axios.get('https://valorant-api.com/v1/buddies');
             buddiesResponse.data.data.forEach((buddy: any) => {
                 BUDDIES[buddy.uuid] = new Buddy(buddy);
             });
-            log.info(`${Object.keys(BUDDIES).length} buddies updated.`);
 
             const bundlesResponse = await axios.get('https://valorant-api.com/v1/bundles');
             bundlesResponse.data.data.forEach((bundle: any) => {
                 BUNDLES[bundle.uuid] = new Bundle(bundle);
             });
-            log.info(`${Object.keys(BUNDLES).length} bundles updated.`);
 
             const ceremoniesResponse = await axios.get('https://valorant-api.com/v1/ceremonies');
             ceremoniesResponse.data.data.forEach((ceremony: any) => {
                 CEREMONIES[ceremony.uuid] = new Ceremony(ceremony);
             });
-            log.info(`${Object.keys(CEREMONIES).length} ceremonies updated.`);
 
             const competitiveTiersResponse = await axios.get('https://valorant-api.com/v1/competitivetiers');
             competitiveTiersResponse.data.data.forEach((tier: any) => {
                 COMPETITIVE_TIERS[tier.uuid] = new CompetitiveTier(tier);
             });
-            log.info(`${Object.keys(COMPETITIVE_TIERS).length} competitive tiers updated.`);
 
             const contentTiersResponse = await axios.get('https://valorant-api.com/v1/contenttiers');
             contentTiersResponse.data.data.forEach((tier: any) => {
                 CONTENT_TIERS[tier.uuid] = new ContentTier(tier);
             });
-            log.info(`${Object.keys(CONTENT_TIERS).length} content tiers updated.`);
 
             const contractsResponse = await axios.get('https://valorant-api.com/v1/contracts');
             contractsResponse.data.data.forEach((contract: any) => {
                 CONTRACTS[contract.uuid] = new Contract(contract);
             });
-            log.info(`${Object.keys(CONTRACTS).length} contracts updated.`);
 
             const currenciesResponse = await axios.get('https://valorant-api.com/v1/currencies');
             currenciesResponse.data.data.forEach((currency: any) => {
                 CURRENCIES[currency.uuid] = new Currency(currency);
             });
-            log.info(`${Object.keys(CURRENCIES).length} currencies updated.`);
 
             const eventsResponse = await axios.get('https://valorant-api.com/v1/events');
             eventsResponse.data.data.forEach((event: any) => {
                 EVENTS[event.uuid] = new EventDto(event);
             });
-            log.info(`${Object.keys(EVENTS).length} events updated.`);
 
             const gameModesResponse = await axios.get('https://valorant-api.com/v1/gamemodes');
             gameModesResponse.data.data.forEach((gameMode: any) => {
                 GAME_MODES[gameMode.uuid] = new GameMode(gameMode);
             });
-            log.info(`${Object.keys(GAME_MODES).length} game modes updated.`);
 
             const gearsResponse = await axios.get('https://valorant-api.com/v1/gear');
             gearsResponse.data.data.forEach((gear: any) => {
                 GEARS[gear.uuid] = new Gear(gear);
             });
-            log.info(`${Object.keys(GEARS).length} gears updated.`);
 
             const levelBordersResponse = await axios.get('https://valorant-api.com/v1/levelborders');
             levelBordersResponse.data.data.forEach((border: any) => {
                 LEVEL_BORDERS[border.uuid] = new LevelBorder(border);
             });
-            log.info(`${Object.keys(LEVEL_BORDERS).length} level borders updated.`);
 
             const mapsResponse = await axios.get('https://valorant-api.com/v1/maps');
             mapsResponse.data.data.forEach((map: any) => {
                 MAPS[map.uuid] = new MapDto(map);
             });
-            log.info(`${Object.keys(MAPS).length} maps updated.`);
 
             const playerCardsResponse = await axios.get('https://valorant-api.com/v1/playercards');
             playerCardsResponse.data.data.forEach((card: any) => {
                 PLAYER_CARDS[card.uuid] = new PlayerCard(card);
             });
-            log.info(`${Object.keys(PLAYER_CARDS).length} player cards updated.`);
 
             const playerTitlesResponse = await axios.get('https://valorant-api.com/v1/playertitles');
             playerTitlesResponse.data.data.forEach((title: any) => {
                 PLAYER_TITLES[title.uuid] = new PlayerTitle(title);
             });
-            log.info(`${Object.keys(PLAYER_TITLES).length} player titles updated.`);
 
             const seasonsResponse = await axios.get('https://valorant-api.com/v1/seasons');
             seasonsResponse.data.data.forEach((season: any) => {
                 SEASONS[season.uuid] = new Season(season);
             });
-            log.info(`${Object.keys(SEASONS).length} seasons updated.`);
 
             const spraysResponse = await axios.get('https://valorant-api.com/v1/sprays');
             spraysResponse.data.data.forEach((spray: any) => {
                 SPRAYS[spray.uuid] = new Spray(spray);
             });
-            log.info(`${Object.keys(SPRAYS).length} sprays updated.`);
 
             const weaponsResponse = await axios.get('https://valorant-api.com/v1/weapons');
             weaponsResponse.data.data.forEach((weapon: any) => {
                 WEAPONS[weapon.uuid] = new Weapon(weapon);
             });
-            log.info(`${Object.keys(WEAPONS).length} weapons updated.`);
+        }
+
+        return {
+            AGENTS,
+            BUDDIES,
+            BUNDLES,
+            CEREMONIES,
+            COMPETITIVE_TIERS,
+            CONTENT_TIERS,
+            CONTRACTS,
+            CURRENCIES,
+            EVENTS,
+            GAME_MODES,
+            GEARS,
+            LEVEL_BORDERS,
+            MAPS,
+            PLAYER_CARDS,
+            PLAYER_TITLES,
+            ROLES,
+            SEASONS,
+            SPRAYS,
+            THEMES,
+            WEAPONS
         }
 
     } catch (error) {
         console.error('Error updating dtos:', error);
     }
-
-    setTimeout(updateDtos, 60000);
 }
