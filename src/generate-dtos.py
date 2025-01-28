@@ -31,6 +31,11 @@ def save_response_to_file(name, data):
     to_save = {}
     for item in data["data"]:
         to_save[item["uuid"]] = item
+    if name == "agents":
+        roles = {}
+        for agent in data["data"]:
+            roles[agent["role"]["uuid"]] = agent["role"]
+            save_response_to_file("roles", {"data": list(roles.values())})
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     file_path = os.path.join(OUTPUT_DIR, f"{name}.json")
     with open(file_path, "w", encoding="utf-8") as file:
