@@ -269,6 +269,16 @@ export class FinishingDamage {
     isSecondaryFireMode: boolean;
 
     constructor(data: any, killer: Player) {
+        if (data.damageItem?.toLowerCase() === '856d9a7e-4b06-dc37-15dc-9d809c37cb90') { // Chamber: Headhunter
+            data.damageType = 'Ability';
+            data.damageItem = 'Ability1';
+        } else if (data.damageItem?.toLowerCase() === '39099fb5-4293-def4-1e09-2e9080ce7456') { // Chamber: Tour De Force
+            data.damageType = 'Ability';
+            data.damageItem = 'Ultimate';
+        } else if (data.damageItem?.toLowerCase() === '95336ae4-45d4-1032-cfaf-6bad01910607') { // Neon: Overdrive
+            data.damageType = 'Ability';
+            data.damageItem = 'Ultimate';
+        }
         this.damageType = data.damageType === '' ? 'Bomb' : data.damageType;
         this.damageItem = data.damageType === 'Ability' ? (killer.agent?.abilities[data.damageItem === 'GrenadeAbility' ? 'Grenade' : data.damageItem] ?? null)
             : ((data.damageType === 'Weapon' && data.damageItem !== '') ? WEAPONS[data.damageItem?.toLowerCase()] : null);
