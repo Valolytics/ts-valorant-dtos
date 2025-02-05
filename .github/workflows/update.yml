@@ -8,17 +8,21 @@ on:
 jobs:
   check_branch:
     runs-on: ubuntu-latest
+    outputs:
+      branch_changed: ${{ steps.compare.outputs.branch_changed }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Fetch current branch from API
+        id: fetch_api
         run: |
           BRANCH=$(curl -s https://valorant-api.com/v1/version | jq -r '.data.branch')
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Load last saved branch
-        id: check_saved_branch
+        id: load_saved_branch
         run: |
           FILE="last_branch.txt"
           if [ -f "$FILE" ]; then
@@ -27,25 +31,26 @@ jobs:
             LAST_BRANCH=""
           fi
           echo "LAST_BRANCH=$LAST_BRANCH" >> $GITHUB_ENV
+          echo "last_branch=$LAST_BRANCH" >> $GITHUB_OUTPUT
           echo "Last branch: $LAST_BRANCH, Current branch: $BRANCH"
 
       - name: Compare and update branch if changed
-        if: env.BRANCH != env.LAST_BRANCH
+        id: compare
         run: |
-          echo "$BRANCH" > last_branch.txt
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add last_branch.txt
-          git commit -m "Updated last branch to $BRANCH"
-          git push
+          if [ "$BRANCH" != "$LAST_BRANCH" ]; then
+            echo "Branch has changed!"
+            echo "branch_changed=true" >> $GITHUB_OUTPUT
+            echo "$BRANCH" > last_branch.txt
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add last_branch.txt
+            git commit -m "Updated last branch to $BRANCH"
+            git push
+          else
+            echo "No branch change detected."
+            echo "branch_changed=false" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run custom action on branch change
-        if: env.BRANCH != env.LAST_BRANCH
-        run: |
-          echo "Branch has changed! Running custom action..."
-          # Add your custom action here (e.g., send a Discord message, trigger another workflow, etc.)
 
   build_package:
     needs: check_branch
@@ -64,7 +69,7 @@ jobs:
         run: npm install
 
       - name: Run pre-build script
-        run: npm run prebuild  # This should execute `fetch-data.ts`
+        run: npm run prebuild  # Executes `fetch-data.ts`
 
       - name: Build package
         run: npm run build
