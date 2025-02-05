@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "main": "dist/index.js",
   "scripts": {
+    "prebuild": "ts-node src/scripts/fetch-data.ts",
     "build": "tsc --build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publish:github": "npm publish"
@@ -24,7 +25,8 @@
   "description": "",
   "dependencies": {
     "axios": "^1.7.9",
-    "pino": "^9.6.0"
+    "pino": "^9.6.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",

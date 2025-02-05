@@ -1,0 +1,70 @@
+name: Check Valorant API Version and Build Package
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs every hour
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  check_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch current branch from API
+        run: |
+          BRANCH=$(curl -s https://valorant-api.com/v1/version | jq -r '.data.branch')
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+
+      - name: Load last saved branch
+        id: check_saved_branch
+        run: |
+          FILE="last_branch.txt"
+          if [ -f "$FILE" ]; then
+            LAST_BRANCH=$(cat $FILE)
+          else
+            LAST_BRANCH=""
+          fi
+          echo "LAST_BRANCH=$LAST_BRANCH" >> $GITHUB_ENV
+          echo "Last branch: $LAST_BRANCH, Current branch: $BRANCH"
+
+      - name: Compare and update branch if changed
+        if: env.BRANCH != env.LAST_BRANCH
+        run: |
+          echo "$BRANCH" > last_branch.txt
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add last_branch.txt
+          git commit -m "Updated last branch to $BRANCH"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run custom action on branch change
+        if: env.BRANCH != env.LAST_BRANCH
+        run: |
+          echo "Branch has changed! Running custom action..."
+          # Add your custom action here (e.g., send a Discord message, trigger another workflow, etc.)
+
+  build_package:
+    needs: check_branch
+    if: needs.check_branch.outputs.branch_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run pre-build script
+        run: npm run prebuild  # This should execute `fetch-data.ts`
+
+      - name: Build package
+        run: npm run build
