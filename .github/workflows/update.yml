@@ -82,7 +82,17 @@ jobs:
           jq --arg version "$VERSION" '.version=$version' package.json > tmp.json && mv tmp.json package.json
           cat package.json
 
+      - name: Check if there are changes
+        id: check_changes
+        run: |
+          if git diff --exit-code package.json; then
+            echo "NO_CHANGES=true" >> $GITHUB_ENV
+          else
+            echo "NO_CHANGES=false" >> $GITHUB_ENV
+          fi
+
       - name: Commit and push version change
+        if: env.NO_CHANGES == 'false'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -110,8 +120,7 @@ jobs:
         run: npm install
 
       - name: Verify package.json version before build
-        run: |
-          cat package.json | jq '.version'
+        run: cat package.json | jq '.version'
 
       - name: Run pre-build script
         run: npm run prebuild  # Executes `fetch-data.ts`
