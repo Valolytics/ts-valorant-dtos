@@ -30,14 +30,14 @@ jobs:
           else
             LAST_BRANCH=""
           fi
-          echo "LAST_BRANCH=$LAST_BRANCH" >> $GITHUB_ENV
-          echo "last_branch=$LAST_BRANCH" >> $GITHUB_OUTPUT
-          echo "Last branch: $LAST_BRANCH, Current branch: $BRANCH"
+          echo "LAST_BRANCH=${LAST_BRANCH:-}" >> $GITHUB_ENV
+          echo "last_branch=${LAST_BRANCH:-}" >> $GITHUB_OUTPUT
+          echo "Last branch: '${LAST_BRANCH}', Current branch: '${BRANCH}'"
 
       - name: Compare and update branch if changed
         id: compare
         run: |
-          if [ "$BRANCH" != "$LAST_BRANCH" ]; then
+          if [ -z "$LAST_BRANCH" ] || [ "$BRANCH" != "$LAST_BRANCH" ]; then
             echo "Branch has changed!"
             echo "branch_changed=true" >> $GITHUB_ENV
             echo "branch_changed=true" >> $GITHUB_OUTPUT
@@ -52,6 +52,7 @@ jobs:
             echo "No branch change detected."
             echo "branch_changed=false" >> $GITHUB_ENV
             echo "branch_changed=false" >> $GITHUB_OUTPUT
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
