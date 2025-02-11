@@ -1,4 +1,4 @@
-name: Check Valorant API Version and Build Package
+name: Check Valorant API Version, Build & Publish Package
 
 on:
   schedule:
@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch_changed: ${{ steps.compare.outputs.branch_changed }}
+      new_branch: ${{ steps.fetch_api.outputs.branch }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,14 +31,14 @@ jobs:
           else
             LAST_BRANCH=""
           fi
-          echo "LAST_BRANCH=$LAST_BRANCH" >> $GITHUB_ENV
-          echo "last_branch=$LAST_BRANCH" >> $GITHUB_OUTPUT
-          echo "Last branch: $LAST_BRANCH, Current branch: $BRANCH"
+          echo "LAST_BRANCH=${LAST_BRANCH:-}" >> $GITHUB_ENV
+          echo "last_branch=${LAST_BRANCH:-}" >> $GITHUB_OUTPUT
+          echo "Last branch: '${LAST_BRANCH}', Current branch: '${BRANCH}'"
 
       - name: Compare and update branch if changed
         id: compare
         run: |
-          if [ "$BRANCH" != "$LAST_BRANCH" ]; then
+          if [ -z "$LAST_BRANCH" ] || [ "$BRANCH" != "$LAST_BRANCH" ]; then
             echo "Branch has changed!"
             echo "branch_changed=true" >> $GITHUB_ENV
             echo "branch_changed=true" >> $GITHUB_OUTPUT
@@ -47,16 +48,63 @@ jobs:
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git add last_branch.txt
             git commit -m "Updated last branch to $BRANCH"
+            git pull --rebase --autostash
             git push
           else
             echo "No branch change detected."
             echo "branch_changed=false" >> $GITHUB_ENV
             echo "branch_changed=false" >> $GITHUB_OUTPUT
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build_package:
+  set_version_tag:
     needs: check_branch
+    if: needs.check_branch.outputs.branch_changed == 'true' && startsWith(needs.check_branch.outputs.new_branch, 'release-')
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from branch name
+        id: extract_version
+        run: |
+          BRANCH="${{ needs.check_branch.outputs.new_branch }}"
+          VERSION=$(echo "$BRANCH" | sed -E 's/release-([0-9]+)\.([0-9]+)/\1.\2.0/')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Set version in package.json
+        run: |
+          jq --arg version "$VERSION" '.version=$version' package.json > tmp.json && mv tmp.json package.json
+          cat package.json
+
+      - name: Check if there are changes
+        id: check_changes
+        run: |
+          if git diff --exit-code package.json; then
+            echo "NO_CHANGES=true" >> $GITHUB_ENV
+          else
+            echo "NO_CHANGES=false" >> $GITHUB_ENV
+          fi
+
+      - name: Commit and push version change
+        if: env.NO_CHANGES == 'false'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "Set version to $VERSION for ${{ needs.check_branch.outputs.new_branch }}"
+          git pull --rebase --autostash
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_and_publish_package:
+    needs: [check_branch, set_version_tag]
     if: needs.check_branch.outputs.branch_changed == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -67,12 +115,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          registry-url: "https://npm.pkg.github.com"
 
       - name: Install dependencies
         run: npm install
+
+      - name: Verify package.json version before build
+        run: cat package.json | jq '.version'
 
       - name: Run pre-build script
         run: npm run prebuild  # Executes `fetch-data.ts`
 
       - name: Build package
         run: npm run build
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
