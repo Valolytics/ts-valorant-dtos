@@ -107,6 +107,8 @@ jobs:
     needs: [check_branch, set_version_tag]
     if: always()
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.load_last_released_version.outputs.latest_release }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -139,7 +141,7 @@ jobs:
           fi
 
   build_and_publish_package:
-    needs: [check_branch, check_version_and_build]
+    needs: [check_branch, set_version_tag, check_version_and_build]
     if: needs.check_branch.outputs.branch_changed == 'true' || needs.check_version_and_build.outputs.version_greater == 'true'
     runs-on: ubuntu-latest
     steps:
