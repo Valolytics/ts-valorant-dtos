@@ -105,6 +105,7 @@ jobs:
 
   check_version_and_build:
     needs: [check_branch, set_version_tag]
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
