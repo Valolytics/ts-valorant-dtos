@@ -1,7 +1,6 @@
 export * from "./services/dtos.service";
-export * from "./models/agent.model";
+export * from "./models/account.model";
 export * from "./models/activeShard.model";
-export * from "./models/agent.model";
 export { Level as BuddyLevel, Buddy } from "./models/buddy.model";
 export * from "./models/bundle.model";
 export * from "./models/ceremony.model";
