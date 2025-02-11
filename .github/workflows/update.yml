@@ -130,8 +130,13 @@ jobs:
         id: compare_versions
         run: |
           PACKAGE_VERSION=$(cat package.json | jq -r '.version')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV # Keep for debugging ENV if needed
           echo "package_version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          LATEST_RELEASE=$(cat last_package.txt) # Assuming last_package.txt exists or is handled correctly
+          echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV # Keep for debugging ENV if needed
+          echo "latest_release=$LATEST_RELEASE" >> $GITHUB_OUTPUT
+          echo "DEBUG: PACKAGE_VERSION: '$PACKAGE_VERSION'"
+          echo "DEBUG: LATEST_RELEASE: '$LATEST_RELEASE'"
           if [ "$(printf '%s\n' "$PACKAGE_VERSION" "$LATEST_RELEASE" | sort -V | head -n1)" != "$PACKAGE_VERSION" ]; then
             echo "Version is greater than latest release. Proceeding to build."
             echo "version_greater=true" >> $GITHUB_OUTPUT
@@ -139,6 +144,7 @@ jobs:
             echo "Version is not greater than latest release. Skipping build."
             echo "version_greater=false" >> $GITHUB_OUTPUT
           fi
+          echo "DEBUG: version_greater output (check_version_and_build): ${{ steps.compare_versions.outputs.version_greater }}"
 
   build_and_publish_package:
     needs: [check_branch, set_version_tag, check_version_and_build]
