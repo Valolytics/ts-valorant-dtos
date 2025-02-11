@@ -126,12 +126,12 @@ jobs:
           echo "latest_release=${LATEST_RELEASE:-}" >> $GITHUB_OUTPUT
           echo "Last released npm package: '${LATEST_RELEASE}'"
 
-      - name: Compare package version with latest release (FORCED TRUE)
+      - name: Compare package version with latest release (FORCED TRUE - Syntax Variation 1)
         id: compare_versions
         run: |
-          echo "version_greater=true" >> $GITHUB_OUTPUT
-          echo "DEBUG: Forced version_greater=true output"
-          echo "DEBUG: version_greater output (check_version_and_build) - FORCED: ${{ steps.compare_versions.outputs.version_greater }}"
+          echo "::set-output name=version_greater::true"
+          echo "DEBUG: Forced version_greater=true output (Syntax Variation 1)"
+          echo "DEBUG: version_greater output (check_version_and_build) - FORCED (Syntax Variation 1): ${{ steps.compare_versions.outputs.version_greater }}"
 
   build_and_publish_package:
     needs: [check_branch, set_version_tag, check_version_and_build]
