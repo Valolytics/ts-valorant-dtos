@@ -132,10 +132,10 @@ jobs:
           echo "package_version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
           if [ "$(printf '%s\n' "$PACKAGE_VERSION" "$LATEST_RELEASE" | sort -V | head -n1)" != "$PACKAGE_VERSION" ]; then
             echo "Version is greater than latest release. Proceeding to build."
-            echo "version_greater=true" >> $GITHUB_ENV
+            echo "version_greater=true" >> $GITHUB_OUTPUT
           else
             echo "Version is not greater than latest release. Skipping build."
-            echo "version_greater=false" >> $GITHUB_ENV
+            echo "version_greater=false" >> $GITHUB_OUTPUT
           fi
 
   build_and_publish_package:
