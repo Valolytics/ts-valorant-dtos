@@ -111,10 +111,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch latest release version
+      - name: Fetch latest release version from GitHub Packages
         id: fetch_latest_release
         run: |
-          LATEST_RELEASE=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')
+          LATEST_RELEASE=$(curl -s \
+            https://npm.pkg.github.com/v1/packages/${{ github.repository }}/ts-valorant-dtos/versions \
+            -H "Authorization: Bearer ${{ secrets.NPM_TOKEN }}" | jq -r '.[0].version')
           echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
           echo "latest_release=$LATEST_RELEASE" >> $GITHUB_OUTPUT
           echo "Latest release: $LATEST_RELEASE"
