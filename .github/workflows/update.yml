@@ -115,7 +115,7 @@ jobs:
         id: fetch_latest_release
         run: |
           LATEST_RELEASE=$(curl -s \
-            https://npm.pkg.github.com/v1/packages/${{ github.repository }}/ts-valorant-dtos/versions \
+            https://npm.pkg.github.com/v1/packages/Valolytics/ts-valorant-dtos/versions \
             -H "Authorization: Bearer ${{ secrets.NPM_TOKEN }}" | jq -r '.[0].version')
           echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
           echo "latest_release=$LATEST_RELEASE" >> $GITHUB_OUTPUT
