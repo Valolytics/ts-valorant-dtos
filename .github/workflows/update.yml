@@ -148,7 +148,7 @@ jobs:
 
   build_and_publish_package:
     needs: [check_branch, set_version_tag, check_version_and_build]
-    if: needs.check_version_and_build.outputs.version_greater == 'true' || needs.check_branch.outputs.branch_changed == 'true'
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
