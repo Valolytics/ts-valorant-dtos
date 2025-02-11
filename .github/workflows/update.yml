@@ -108,7 +108,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.load_last_released_version.outputs.latest_release }}
+      version_greater: ${{ steps.compare_versions.outputs.version_greater }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
