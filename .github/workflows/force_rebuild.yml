@@ -1,0 +1,34 @@
+name: Force Build & Publish Package
+
+on:
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  build_and_publish_package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify package.json version before build
+        run: cat package.json | jq '.version'
+
+      - name: Run pre-build script
+        run: npm run prebuild  # Executes `fetch-data.ts`
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
