@@ -187,7 +187,7 @@ export class Player {
 
 export class Coach {
     puuid: string;
-    team: Team;
+    team: Team | null;
 
     constructor(data: any, teams: { [teamId: string]: Team }) {
         this.puuid = data.puuid;
@@ -197,7 +197,7 @@ export class Coach {
     toJSON() {
         return {
             puuid: this.puuid,
-            teamId: this.team.teamId,
+            teamId: this.team?.teamId,
         }
     }
 }
