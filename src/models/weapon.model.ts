@@ -5,7 +5,7 @@ import { THEMES, WEAPONS } from '../services/dtos.service.js';
 export class Weapon {
     uuid: string;
     displayName: string;
-    category: string;
+    category: WeaponCategory;
     defaultSkinUuid: string;
     displayIcon: string;
     killStreamIcon: string;
@@ -30,6 +30,16 @@ export class Weapon {
     static getClassic(): Weapon {
         return WEAPONS['29a0cfab-485b-f5d5-779a-b59f85e204a8'];
     }
+}
+
+export enum WeaponCategory {
+    Melee = 'EEquippableCategory::Melee',
+    Sidearm = 'EEquippableCategory::Sidearm',
+    SMG = 'EEquippableCategory::SMG',
+    Shotgun = 'EEquippableCategory::Shotgun',
+    Rifle = 'EEquippableCategory::Rifle',
+    Sniper = 'EEquippableCategory::Sniper',
+    Heavy = 'EEquippableCategory::Heavy',
 }
 
 export class WeaponStats {
