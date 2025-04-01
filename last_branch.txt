@@ -1,1 +1,1 @@
-release-10.05
+release-10.06
