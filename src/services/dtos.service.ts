@@ -120,6 +120,10 @@ export class Gears extends Collection<Gear> {
     constructor(json: any) {
         super(json, Gear);
     }
+
+    get light(): Gear { return this.items["4dec83d5-4902-9ab3-bed6-a7a390761157"]; }
+    get regen(): Gear { return this.items["b1b9086d-41bd-a516-5d29-e3b34a6f1644"]; }
+    get heavy(): Gear { return this.items["822bcab2-40a2-324e-c137-e09195ad7692"]; }
 }
 export class LevelBorders extends Collection<LevelBorder> {
     constructor(json: any) {
