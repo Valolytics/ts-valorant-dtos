@@ -136,9 +136,7 @@ export class PlayerCards extends Collection<PlayerCard> {
         super(json, PlayerCard);
     }
 
-    get default(): PlayerCard {
-        return this.items["9fb348bc-41a0-91ad-8a3e-818035c4e561"];
-    }
+    get default(): PlayerCard { return this.items["9fb348bc-41a0-91ad-8a3e-818035c4e561"]; }
 }
 export class PlayerTitles extends Collection<PlayerTitle> {
     constructor(json: any) {
@@ -160,9 +158,25 @@ export class Weapons extends Collection<Weapon> {
         super(json, Weapon);
     }
 
-    get classic(): Weapon {
-        return this.items["29a0cfab-485b-f5d5-779a-b59f85e204a8"];
-    }
+    get classic(): Weapon { return this.items["29a0cfab-485b-f5d5-779a-b59f85e204a8"]; }
+    get shorty(): Weapon { return this.items["42da8ccc-40d5-affc-beec-15aa47b42eda"]; }
+    get frenzy(): Weapon { return this.items["44d4e95c-4157-0037-81b2-17841bf2e8e3"]; }
+    get ghost(): Weapon { return this.items["1baa85b4-4c70-1284-64bb-6481dfc3bb4e"]; }
+    get sheriff(): Weapon { return this.items["e336c6b8-418d-9340-d77f-7a9e4cfe0702"]; }
+    get stinger(): Weapon { return this.items["f7e1b454-4ad4-1063-ec0a-159e56b58941"]; }
+    get spectre(): Weapon { return this.items["462080d1-4035-2937-7c09-27aa2a5c27a7"]; }
+    get bucky(): Weapon { return this.items["910be174-449b-c412-ab22-d0873436b21b"]; }
+    get judge(): Weapon { return this.items["ec845bf4-4f79-ddda-a3da-0db3774b2794"]; }
+    get bulldog(): Weapon { return this.items["ae3de142-4d85-2547-dd26-4e90bed35cf7"]; }
+    get guardian(): Weapon { return this.items["4ade7faa-4cf1-8376-95ef-39884480959b"]; }
+    get phantom(): Weapon { return this.items["ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a"]; }
+    get vandal(): Weapon { return this.items["9c82e19d-4575-0200-1a81-3eacf00cf872"]; }
+    get marshal(): Weapon { return this.items["c4883e50-4494-202c-3ec3-6b8a9284f00b"]; }
+    get outlaw(): Weapon { return this.items["5f0aaf7a-4289-3998-d5ff-eb9a5cf7ef5c"]; }
+    get operator(): Weapon { return this.items["a03b24d3-4319-996d-0f8c-94bbfba1dfc7"]; }
+    get ares(): Weapon { return this.items["55d8a0f4-4274-ca67-fe2c-06ab45efdf58"]; }
+    get odin(): Weapon { return this.items["63e6c2b6-4a8e-869c-3d4c-e38355226584"]; }
+    get melee(): Weapon { return this.items["2f59173c-4bed-b6c3-2191-dea9b58be9c7"]; }
 }
 
 export const THEMES: Themes = new Themes(JsonThemes);
