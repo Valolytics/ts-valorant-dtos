@@ -1,6 +1,6 @@
 import { ShopData } from './shopData.model.js';
 import { Theme } from './theme.model';
-import { THEMES, WEAPONS } from '../services/dtos.service.js';
+import { THEMES } from '../services/dtos.service.js';
 
 export class Weapon {
     uuid: string;
@@ -25,10 +25,6 @@ export class Weapon {
         this.weaponStats = data.weaponStats ? new WeaponStats(data.weaponStats) : null;
         this.shopData = data.shopData ? new ShopData(data.shopData) : null;
         this.skins = data.skins.map((skin: any) => new Skin(skin));
-    }
-
-    static getClassic(): Weapon {
-        return WEAPONS['29a0cfab-485b-f5d5-779a-b59f85e204a8'];
     }
 }
 
@@ -133,7 +129,7 @@ export class DamageRange {
 export class Skin {
     uuid: string;
     displayName: string;
-    themeUuid: Theme;
+    themeUuid: Theme | undefined;
     contentTierUuid: string | null;
     displayIcon: string | null;
     wallpaper: string | null;
@@ -144,7 +140,7 @@ export class Skin {
     constructor(data: any) {
         this.uuid = data.uuid;
         this.displayName = data.displayName;
-        this.themeUuid = THEMES[data.themeUuid];
+        this.themeUuid = THEMES.getByProperty("uuid", data.themeUuid);
         this.contentTierUuid = data.contentTierUuid;
         this.displayIcon = data.displayIcon;
         this.wallpaper = data.wallpaper;

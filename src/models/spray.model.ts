@@ -5,7 +5,7 @@ export class Spray {
     uuid: string;
     displayName: string;
     category: string | null;
-    themeUuid: Theme | null;
+    themeUuid: Theme | undefined;
     isNullSpray: boolean;
     hideIfNotOwned: boolean;
     displayIcon: string;
@@ -20,7 +20,7 @@ export class Spray {
         this.uuid = data.uuid;
         this.displayName = data.displayName;
         this.category = data.category;
-        this.themeUuid = data.themeUuid ? THEMES[data.themeUuid] : null;
+        this.themeUuid = THEMES.getByProperty("uuid", data.themeUuid);
         this.isNullSpray = data.isNullSpray;
         this.hideIfNotOwned = data.hideIfNotOwned;
         this.displayIcon = data.displayIcon;

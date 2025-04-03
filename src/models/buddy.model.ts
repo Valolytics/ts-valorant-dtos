@@ -5,7 +5,7 @@ export class Buddy {
     uuid: string;
     displayName: string;
     isHiddenIfNotOwned: boolean;
-    themeUuid: Theme | null;
+    themeUuid: Theme | undefined;
     displayIcon: string;
     assetPath: string;
     levels: Level[];
@@ -14,7 +14,7 @@ export class Buddy {
         this.uuid = data.uuid;
         this.displayName = data.displayName;
         this.isHiddenIfNotOwned = data.isHiddenIfNotOwned;
-        this.themeUuid = data.themeUuid ? THEMES[data.themeUuid] : null;
+        this.themeUuid = THEMES.getByProperty("uuid", data.themeUuid);
         this.displayIcon = data.displayIcon;
         this.assetPath = data.assetPath;
         this.levels = data.levels.map((level: any) => new Level(level));

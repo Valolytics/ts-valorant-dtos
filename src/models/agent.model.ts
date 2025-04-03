@@ -20,7 +20,7 @@ export class Agent {
     isPlayableCharacter: boolean;
     isAvailableForTest: boolean;
     isBaseContent: boolean;
-    role: Role;
+    role: Role | undefined;
     recruitmentData: RecruitmentData | null;
     abilities: {
         [slot: string]: Ability;
@@ -46,7 +46,7 @@ export class Agent {
         this.isPlayableCharacter = data.isPlayableCharacter;
         this.isAvailableForTest = data.isAvailableForTest;
         this.isBaseContent = data.isBaseContent;
-        this.role = ROLES[data.role.uuid];
+        this.role = ROLES.getByProperty("uuid", data.role.uuid);
         this.recruitmentData = data.recruitmentData ? new RecruitmentData(data.recruitmentData) : null;
         this.abilities = {};
         data.abilities.forEach((ability: any) => {
@@ -92,7 +92,7 @@ export class Ability {
     static getAbilityByAbilityDisplayIcon(abilityDisplayIcon: string | null): Ability | null {
         if (!abilityDisplayIcon) return null;
         const agentUuid: string = abilityDisplayIcon.split('/')[4]
-        return Object.values(AGENTS[agentUuid].abilities).find((ability: Ability) => ability.displayIcon === abilityDisplayIcon) ?? null;
+        return Object.values(AGENTS.getByProperty("uuid", agentUuid)?.abilities || {}).find((ability: Ability) => ability.displayIcon === abilityDisplayIcon) ?? null;
     }
 }
 

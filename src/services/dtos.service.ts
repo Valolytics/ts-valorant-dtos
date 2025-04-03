@@ -40,47 +40,151 @@ import JsonSeasons from '../dtos/seasons.json';
 import JsonSprays from '../dtos/sprays.json';
 import JsonWeapons from '../dtos/weapons.json';
 
-export interface Themes { [uuid: string]: Theme; }
-export interface Roles { [uuid: string]: Role; }
-export interface Agents { [uuid: string]: Agent; }
-export interface Buddies { [uuid: string]: Buddy; }
-export interface Bundles { [uuid: string]: Bundle; }
-export interface Ceremonies { [uuid: string]: Ceremony; }
-export interface CompetitiveTiers { [uuid: string]: CompetitiveTier; }
-export interface ContentTiers { [uuid: string]: ContentTier; }
-export interface Contracts { [uuid: string]: Contract; }
-export interface Currencies { [uuid: string]: Currency; }
-export interface Events { [uuid: string]: EventDto; }
-export interface GameModes { [uuid: string]: GameMode; }
-export interface Gears { [uuid: string]: Gear; }
-export interface LevelBorders { [uuid: string]: LevelBorder; }
-export interface Maps { [uuid: string]: MapDto; }
-export interface PlayerCards { [uuid: string]: PlayerCard; }
-export interface PlayerTitles { [uuid: string]: PlayerTitle; }
-export interface Seasons { [uuid: string]: Season; }
-export interface Sprays { [uuid: string]: Spray; }
-export interface Weapons { [uuid: string]: Weapon; }
+export class Collection<T> {
+    protected items: { [uuid: string]: T };
+  
+    constructor(json: any, Constructor: new (data: any) => T) {
+        this.items = mapToInstances(json, Constructor);
+    }
+  
+    getByProperty<K extends keyof T>(property: K, value: T[K]): T | undefined {
+        return Object.values(this.items).find(item => item[property] === value);
+    }
+  
+    get all(): { [uuid: string]: T } {
+        return this.items;
+    }
+}
 
-export const THEMES: Themes = mapToInstances(JsonThemes, Theme) as Themes;
-export const ROLES: Roles = mapToInstances(JsonRoles, Role) as Roles;
-export const AGENTS: Agents = mapToInstances(JsonAgents, Agent) as Agents;
-export const BUDDIES: Buddies = mapToInstances(JsonBuddies, Buddy) as Buddies;
-export const BUNDLES: Bundles = mapToInstances(JsonBundles, Bundle) as Bundles;
-export const CEREMONIES: Ceremonies = mapToInstances(JsonCeremonies, Ceremony) as Ceremonies;
-export const COMPETITIVE_TIERS: CompetitiveTiers = mapToInstances(JsonCompetitiveTiers, CompetitiveTier) as CompetitiveTiers;
-export const CONTENT_TIERS: ContentTiers = mapToInstances(JsonContentTiers, ContentTier) as ContentTiers;
-export const CONTRACTS: Contracts = mapToInstances(JsonContracts, Contract) as Contracts;
-export const CURRENCIES: Currencies = mapToInstances(JsonCurrencies, Currency) as Currencies;
-export const EVENTS: Events = mapToInstances(JsonEvents, EventDto) as Events;
-export const GAME_MODES: GameModes = mapToInstances(JsonGameModes, GameMode) as GameModes;
-export const GEARS: Gears = mapToInstances(JsonGears, Gear) as Gears;
-export const LEVEL_BORDERS: LevelBorders = mapToInstances(JsonLevelBorders, LevelBorder) as LevelBorders;
-export const MAPS: Maps = mapToInstances(JsonMaps, MapDto) as Maps;
-export const PLAYER_CARDS: PlayerCards = mapToInstances(JsonPlayerCards, PlayerCard) as PlayerCards;
-export const PLAYER_TITLES: PlayerTitles = mapToInstances(JsonPlayerTitles, PlayerTitle) as PlayerTitles;
-export const SEASONS: Seasons = mapToInstances(JsonSeasons, Season) as Seasons;
-export const SPRAYS: Sprays = mapToInstances(JsonSprays, Spray) as Sprays;
-export const WEAPONS: Weapons = mapToInstances(JsonWeapons, Weapon) as Weapons;
+export class Themes extends Collection<Theme> {
+    constructor(json: any) {
+        super(json, Theme);
+    }
+}
+export class Roles extends Collection<Role> {
+    constructor(json: any) {
+        super(json, Role);
+    }
+}
+export class Agents extends Collection<Agent> {
+    constructor(json: any) {
+        super(json, Agent);
+    }
+}
+export class Buddies extends Collection<Buddy> {
+    constructor(json: any) {
+        super(json, Buddy);
+    }
+}
+export class Bundles extends Collection<Bundle> {
+    constructor(json: any) {
+        super(json, Bundle);
+    }
+}
+export class Ceremonies extends Collection<Ceremony> {
+    constructor(json: any) {
+        super(json, Ceremony);
+    }
+}
+export class CompetitiveTiers extends Collection<CompetitiveTier> {
+    constructor(json: any) {
+        super(json, CompetitiveTier);
+    }
+}
+export class ContentTiers extends Collection<ContentTier> {
+    constructor(json: any) {
+        super(json, ContentTier);
+    }
+}
+export class Contracts extends Collection<Contract> {
+    constructor(json: any) {
+        super(json, Contract);
+    }
+}
+export class Currencies extends Collection<Currency> {
+    constructor(json: any) {
+        super(json, Currency);
+    }
+}
+export class Events extends Collection<EventDto> {
+    constructor(json: any) {
+        super(json, EventDto);
+    }
+}
+export class GameModes extends Collection<GameMode> {
+    constructor(json: any) {
+        super(json, GameMode);
+    }
+}
+export class Gears extends Collection<Gear> {
+    constructor(json: any) {
+        super(json, Gear);
+    }
+}
+export class LevelBorders extends Collection<LevelBorder> {
+    constructor(json: any) {
+        super(json, LevelBorder);
+    }
+}
+export class Maps extends Collection<MapDto> {
+    constructor(json: any) {
+        super(json, MapDto);
+    }
+}
+export class PlayerCards extends Collection<PlayerCard> {
+    constructor(json: any) {
+        super(json, PlayerCard);
+    }
+
+    get default(): PlayerCard {
+        return this.items["9fb348bc-41a0-91ad-8a3e-818035c4e561"];
+    }
+}
+export class PlayerTitles extends Collection<PlayerTitle> {
+    constructor(json: any) {
+        super(json, PlayerTitle);
+    }
+}
+export class Seasons extends Collection<Season> {
+    constructor(json: any) {
+        super(json, Season);
+    }
+}
+export class Sprays extends Collection<Spray> {
+    constructor(json: any) {
+        super(json, Spray);
+    }
+}
+export class Weapons extends Collection<Weapon> {
+    constructor(json: any) {
+        super(json, Weapon);
+    }
+
+    get classic(): Weapon {
+        return this.items["29a0cfab-485b-f5d5-779a-b59f85e204a8"];
+    }
+}
+
+export const THEMES: Themes = new Themes(JsonThemes);
+export const ROLES: Roles = new Roles(JsonRoles);
+export const AGENTS: Agents = new Agents(JsonAgents);
+export const BUDDIES: Buddies = new Buddies(JsonBuddies);
+export const BUNDLES: Bundles = new Bundles(JsonBundles);
+export const CEREMONIES: Ceremonies = new Ceremonies(JsonCeremonies);
+export const COMPETITIVE_TIERS: CompetitiveTiers = new CompetitiveTiers(JsonCompetitiveTiers);
+export const CONTENT_TIERS: ContentTiers = new ContentTiers(JsonContentTiers);
+export const CONTRACTS: Contracts = new Contracts(JsonContracts);
+export const CURRENCIES: Currencies = new Currencies(JsonCurrencies);
+export const EVENTS: Events = new Events(JsonEvents);
+export const GAME_MODES: GameModes = new GameModes(JsonGameModes);
+export const GEARS: Gears = new Gears(JsonGears);
+export const LEVEL_BORDERS: LevelBorders = new LevelBorders(JsonLevelBorders);
+export const MAPS: Maps = new Maps(JsonMaps);
+export const PLAYER_CARDS: PlayerCards = new PlayerCards(JsonPlayerCards);
+export const PLAYER_TITLES: PlayerTitles = new PlayerTitles(JsonPlayerTitles);
+export const SEASONS: Seasons = new Seasons(JsonSeasons);
+export const SPRAYS: Sprays = new Sprays(JsonSprays);
+export const WEAPONS: Weapons = new Weapons(JsonWeapons);
 
 function mapToInstances<T, U>(jsonObject: { [uuid: string]: T }, constructor: new (data: T) => U): { [uuid: string]: U } {
     return Object.fromEntries(

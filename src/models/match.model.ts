@@ -137,12 +137,12 @@ export class Player {
     tagLine: string;
     team: Team | null;
     partyId: string;
-    agent: Agent | null;
+    agent: Agent | undefined;
     stats: PlayerStats | null;
     competitiveTier: Tier;
     isObserver: boolean;
     playerCard: PlayerCard;
-    playerTitle: PlayerTitle;
+    playerTitle: PlayerTitle | undefined;
     accountLevel?: number;
 
     constructor(data: any, teams: { [teamId: string]: Team }) {
@@ -154,12 +154,12 @@ export class Player {
             teams[data.teamId].players.push(this);
         }
         this.partyId = data.partyId;
-        this.agent = data.characterId ? AGENTS[data.characterId] : null;
+        this.agent = AGENTS.getByProperty("uuid", data.characterId);
         this.stats = data.stats ? new PlayerStats(data.stats) : null;
         this.competitiveTier = Object.values(COMPETITIVE_TIERS)[Object.keys(COMPETITIVE_TIERS).length - 1].tiers[data.competitiveTier];
         this.isObserver = data.isObserver;
-        this.playerCard = PLAYER_CARDS[data.playerCard];
-        this.playerTitle = PLAYER_TITLES[data.playerTitle] ?? null;
+        this.playerCard = PLAYER_CARDS.getByProperty("uuid", data.playerCard) ?? PLAYER_CARDS.default;
+        this.playerTitle = PLAYER_TITLES.getByProperty("uuid", data.playerTitle);
         this.accountLevel = data.accountLevel;
     }
 
@@ -265,7 +265,7 @@ export class PlayerLocation {
 
 export class FinishingDamage {
     damageType: 'Ability' | 'Weapon' | 'Bomb';
-    damageItem: Ability | Weapon | null;
+    damageItem: Ability | Weapon | undefined;
     isSecondaryFireMode: boolean;
 
     constructor(data: any, killer: Player) {
@@ -280,8 +280,8 @@ export class FinishingDamage {
             data.damageItem = 'Ultimate';
         }
         this.damageType = data.damageType === '' ? 'Bomb' : data.damageType;
-        this.damageItem = data.damageType === 'Ability' ? (killer.agent?.abilities[data.damageItem === 'GrenadeAbility' ? 'Grenade' : data.damageItem] ?? null)
-            : ((data.damageType === 'Weapon' && data.damageItem !== '') ? WEAPONS[data.damageItem?.toLowerCase()] : null);
+        this.damageItem = data.damageType === 'Ability' ? (killer.agent?.abilities[data.damageItem === 'GrenadeAbility' ? 'Grenade' : data.damageItem] ?? undefined)
+            : ((data.damageType === 'Weapon' && data.damageItem !== '') ? WEAPONS.getByProperty("uuid", data.damageItem?.toLowerCase()) : undefined);
         this.isSecondaryFireMode = data.isSecondaryFireMode;
     }
 
@@ -362,15 +362,15 @@ export class Damage {
 
 export class Economy {
     loadoutValue: number;
-    weapon: Weapon | null;
-    armor: Gear | null;
+    weapon: Weapon | undefined;
+    armor: Gear | undefined;
     remaining: number;
     spent: number;
 
     constructor(data: any) {
         this.loadoutValue = data.loadoutValue;
-        this.weapon = data.weapon !== '' ? WEAPONS[data.weapon.toLowerCase()] : null;
-        this.armor = data.armor !== '' ? GEARS[data.armor.toLowerCase()] : null;
+        this.weapon = WEAPONS.getByProperty("uuid", data.weapon.toLowerCase());
+        this.armor = GEARS.getByProperty("uuid", data.armor.toLowerCase());
         this.remaining = data.remaining;
         this.spent = data.spent;
     }
