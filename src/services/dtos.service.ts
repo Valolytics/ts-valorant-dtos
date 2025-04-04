@@ -134,6 +134,25 @@ export class Maps extends Collection<MapDto> {
     constructor(json: any) {
         super(json, MapDto);
     }
+
+    get abyss(): MapDto { return this.items["224b0a95-48b9-f703-1bd8-67aca101a61f"]; }
+    get ascent(): MapDto { return this.items["7eaecc1b-4337-bbf6-6ab9-04b8f06b3319"]; }
+    get bind(): MapDto { return this.items["2c9d57ec-4431-9c5e-2939-8f9ef6dd5cba"]; }
+    get breeze(): MapDto { return this.items["2fb9a4fd-47b8-4e7d-a969-74b4046ebd53"]; }
+    get district(): MapDto { return this.items["690b3ed2-4dff-945b-8223-6da834e30d24"]; }
+    get drift(): MapDto { return this.items["2c09d728-42d5-30d8-43dc-96a05cc7ee9d"]; }
+    get fracture(): MapDto { return this.items["b529448b-4d60-346e-e89e-00a4c527a405"]; }
+    get glicth(): MapDto { return this.items["d6336a5a-428f-c591-98db-c8a291159134"]; }
+    get haven(): MapDto { return this.items["2bee0dc9-4ffe-519b-1cbd-7fbe763a6047"]; }
+    get icebox(): MapDto { return this.items["e2ad5c54-4114-a870-9641-8ea21279579a"]; }
+    get kasbah(): MapDto { return this.items["12452a9d-48c3-0b02-e7eb-0381c3520404"]; }
+    get lotus(): MapDto { return this.items["2fe4ed3a-450a-948b-6d6b-e89a78e680a9"]; }
+    get pearl(): MapDto { return this.items["fd267378-4d1d-484f-ff52-77821ed10dc2"]; }
+    get piazza(): MapDto { return this.items["de28aa9b-4cbe-1003-320e-6cb3ec309557"]; }
+    get range(): MapDto { return this.items["5914d1e0-40c4-cfdd-6b88-eba06347686c"]; }
+    get split(): MapDto { return this.items["d960549e-485c-e861-8d71-aa9d1aed12a2"]; }
+    get sunset(): MapDto { return this.items["92584fbe-486a-b1b2-9faa-39b0f486b498"]; }
+    get training(): MapDto { return this.items["1f10dab3-4294-3827-fa35-c2aa00213cf3"]; }
 }
 export class PlayerCards extends Collection<PlayerCard> {
     constructor(json: any) {
