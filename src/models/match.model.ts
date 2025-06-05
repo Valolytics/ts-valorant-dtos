@@ -156,7 +156,7 @@ export class Player {
         this.partyId = data.partyId;
         this.agent = AGENTS.getByProperty("uuid", data.characterId);
         this.stats = data.stats ? new PlayerStats(data.stats) : null;
-        this.competitiveTier = Object.values(COMPETITIVE_TIERS)[Object.keys(COMPETITIVE_TIERS).length - 1].tiers[data.competitiveTier];
+        this.competitiveTier = Object.values(COMPETITIVE_TIERS.all)[Object.keys(COMPETITIVE_TIERS.all).length - 1].tiers[data.competitiveTier];
         this.isObserver = data.isObserver;
         this.playerCard = PLAYER_CARDS.getByProperty("uuid", data.playerCard) ?? PLAYER_CARDS.default;
         this.playerTitle = PLAYER_TITLES.getByProperty("uuid", data.playerTitle);
