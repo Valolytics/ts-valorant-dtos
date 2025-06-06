@@ -45,7 +45,7 @@ export class MapDto {
     }
 
     static getMap(mapId: string): MapDto | null {
-        for (const map of Object.values(MAPS)) {
+        for (const map of Object.values(MAPS.all)) {
             if (map.mapUrl === mapId) {
                 return map;
             }
