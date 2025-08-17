@@ -3,7 +3,7 @@ import { Agent } from '../models/agent.model.js';
 import { Buddy } from '../models/buddy.model.js';
 import { Bundle } from '../models/bundle.model.js';
 import { Ceremony } from '../models/ceremony.model.js';
-import { CompetitiveTier } from '../models/competitiveTier.model.js';
+import { CompetitiveTier, Tier } from '../models/competitiveTier.model.js';
 import { ContentTier } from '../models/contentTier.model.js';
 import { Contract } from '../models/contract.model.js';
 import { Currency } from '../models/currency.model.js';
@@ -118,6 +118,12 @@ export class CompetitiveTiers extends Collection<CompetitiveTier> {
     constructor(json: any) {
         super(json, CompetitiveTier);
     }
+
+    get episode1(): CompetitiveTier { return this.items["564d8e28-c226-3180-6285-e48a390db8b1"]; }
+    get episode2(): CompetitiveTier { return this.items["23eb970e-6408-bc0b-3f20-d8fb0e0354ea"]; }
+    get episode3(): CompetitiveTier { return this.items["edb72a72-7e6d-6010-9591-7c053bbdbf48"]; }
+    get episode4(): CompetitiveTier { return this.items["e4e9a692-288f-63ca-7835-16fbf6234fda"]; }
+    get episode5(): CompetitiveTier { return this.items["03621f52-342b-cf4e-4f86-9350a49c6d04"]; }
 }
 export class ContentTiers extends Collection<ContentTier> {
     constructor(json: any) {
