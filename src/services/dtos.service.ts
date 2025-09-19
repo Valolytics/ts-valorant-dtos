@@ -8,6 +8,7 @@ import { ContentTier } from '../models/contentTier.model.js';
 import { Contract } from '../models/contract.model.js';
 import { Currency } from '../models/currency.model.js';
 import { EventDto } from '../models/event.model.js';
+import { FlexDto } from '../models/flex.model.js';
 import { GameMode } from '../models/gameMode.model.js';
 import { Gear } from '../models/gear.model.js';
 import { LevelBorder } from '../models/levelBorder.model.js';
@@ -30,6 +31,7 @@ import JsonContentTiers from '../dtos/contentTiers.json';
 import JsonContracts from '../dtos/contracts.json';
 import JsonCurrencies from '../dtos/currencies.json';
 import JsonEvents from '../dtos/events.json';
+import JsonFlex from '../dtos/flex.json';
 import JsonGameModes from '../dtos/gameModes.json';
 import JsonGears from '../dtos/gears.json';
 import JsonLevelBorders from '../dtos/levelBorders.json';
@@ -145,6 +147,24 @@ export class Events extends Collection<EventDto> {
         super(json, EventDto);
     }
 }
+export class Flex extends Collection<FlexDto> {
+    constructor(json: any) {
+        super(json, FlexDto);
+    }
+
+    get boltPrism(): FlexDto { return this.items["80a11c6a-4d28-bfad-5594-2e9369b7787a"]; }
+    get colonD(): FlexDto { return this.items["cb4bf100-4590-c564-c805-67bcf98b7baa"]; }
+    get killbanner(): FlexDto { return this.items["38dafc48-4668-6f70-1e8c-bf939841cf7e"]; }
+    get champions2025Trophy(): FlexDto { return this.items["e2207345-4fc9-6967-f800-b18e9d87921a"]; }
+    get statCom(): FlexDto { return this.items["af52b5a0-4a4c-03b2-c9d7-8187a08a2675"]; }
+    get helix(): FlexDto { return this.items["f3d05346-4ca8-0f25-6e8e-38bbe0d5bcf0"]; }
+    get stellarDendrite(): FlexDto { return this.items["d3f8f048-4e9c-939d-7233-67892d8b925f"]; }
+    get spikeRushCup(): FlexDto { return this.items["361edf14-4ae3-3831-eeec-5ea715097341"]; }
+    get tactibear(): FlexDto { return this.items["903aafe1-4f32-d020-6150-51bf2f4888ad"]; }
+    get none(): FlexDto { return this.items["90f0a554-41b3-355b-6846-74a27aa3f7b9"]; }
+    get fiveYears(): FlexDto { return this.items["a348bfba-429d-8cf3-e671-1db93db5f793"]; }
+    get sharkX(): FlexDto { return this.items["a99fca6c-4943-5dca-faf0-53990dddbaf6"]; }
+}
 export class GameModes extends Collection<GameMode> {
     constructor(json: any) {
         super(json, GameMode);
@@ -247,6 +267,7 @@ export const CONTENT_TIERS: ContentTiers = new ContentTiers(JsonContentTiers);
 export const CONTRACTS: Contracts = new Contracts(JsonContracts);
 export const CURRENCIES: Currencies = new Currencies(JsonCurrencies);
 export const EVENTS: Events = new Events(JsonEvents);
+export const FLEX: Flex = new Flex(JsonFlex);
 export const GAME_MODES: GameModes = new GameModes(JsonGameModes);
 export const GEARS: Gears = new Gears(JsonGears);
 export const LEVEL_BORDERS: LevelBorders = new LevelBorders(JsonLevelBorders);

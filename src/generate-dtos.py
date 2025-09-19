@@ -14,6 +14,7 @@ ENDPOINTS = [
     {"name": "contracts", "url": "https://valorant-api.com/v1/contracts"},
     {"name": "currencies", "url": "https://valorant-api.com/v1/currencies"},
     {"name": "events", "url": "https://valorant-api.com/v1/events"},
+    {"name": "flex", "url": "https://valorant-api.com/v1/flex"},
     {"name": "gameModes", "url": "https://valorant-api.com/v1/gamemodes"},
     {"name": "gears", "url": "https://valorant-api.com/v1/gear"},
     {"name": "levelBorders", "url": "https://valorant-api.com/v1/levelborders"},
