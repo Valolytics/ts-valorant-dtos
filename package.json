@@ -1,6 +1,6 @@
 {
   "name": "@valolytics/ts-valorant-dtos",
-  "version": "11.11.0",
+  "version": "12.00.0",
   "main": "dist/index.js",
   "scripts": {
     "prebuild": "ts-node src/scripts/fetch-data.ts",
