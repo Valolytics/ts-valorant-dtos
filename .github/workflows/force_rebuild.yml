@@ -3,6 +3,10 @@ name: Force Build & Publish Package
 on:
   workflow_dispatch:  # Allows manual execution
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   build_and_publish_package:
     runs-on: ubuntu-latest
