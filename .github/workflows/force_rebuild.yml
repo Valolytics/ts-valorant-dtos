@@ -3,12 +3,16 @@ name: Force Build & Publish Package
 on:
   workflow_dispatch:  # Allows manual execution
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   build_and_publish_package:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -16,9 +20,9 @@ jobs:
         run: git pull origin main
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 24
           registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
