@@ -1,10 +1,10 @@
 name: Force Build & Publish Package
 
 on:
-  workflow_dispatch:  # Allows manual execution
+  workflow_dispatch:
 
 permissions:
-  id-token: write  # Required for OIDC
+  id-token: write
   contents: read
 
 jobs:
@@ -14,30 +14,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
-
-      - name: Pull latest changes
-        run: git pull origin main
+          ref: main
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24
-          registry-url: "https://registry.npmjs.org"
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: Update npm
+        run: npm install --global npm@11
 
       - name: Install dependencies
         run: npm install
 
-      - name: Verify package.json version before build
-        run: cat package.json | jq '.version'
-
-      - name: Run pre-build script
-        run: npm run prebuild  # Executes `fetch-data.ts`
+      - name: Verify package version
+        run: node -p "require('./package.json').version"
 
       - name: Build package
         run: npm run build
 
       - name: Publish to npmjs.org
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
